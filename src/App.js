@@ -1,10 +1,25 @@
 import React from "react";
 import Header from "./Header";
 import NoteList from "./NoteList";
+import { useEffect } from "react"
 
 const App = () => {
   const [notes, setNotes] = React.useState([]);
   const [searchText, setSearchText] = React.useState("");
+
+   useEffect(() => {
+    // Load notes from local storage when the component mounts
+    const updatedNotes = JSON.parse(localStorage.getItem("notes"));
+    if (updatedNotes) {
+      setNotes(updatedNotes);
+      console.log(updatedNotes);
+    }
+  }, []);
+
+  useEffect(() => {
+    // Save notes to local storage whenever the notes state changes
+    localStorage.setItem("notes", JSON.stringify(notes));
+  }, [notes]);
 
   const addNote = () => {
     const newNote = {
